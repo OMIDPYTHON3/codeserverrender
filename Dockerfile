@@ -2,10 +2,15 @@ FROM codercom/code-server:latest
 
 USER root
 
-RUN apt update && apt install -y git curl python3 python3-pip nano
+# نصب bash و sudo
+RUN apt update && apt install -y bash sudo
 
-# اختیاری: اضافه کردن افزونه‌های VS Code
-RUN code-server --install-extension ms-python.python
+# یوزر coder رو اضافه به sudoers کنیم که بتونه apt بزنه
+RUN echo "coder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-# برگردوندن یوزر به حالت اصلی
+# بازگشت به یوزر code-server
 USER coder
+
+EXPOSE 8080
+
+CMD ["code-server"]
